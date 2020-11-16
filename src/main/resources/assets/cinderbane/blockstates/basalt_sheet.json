@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cinderbane:block/basalt_sheet" },
+    "facing=south": { "model": "cinderbane:block/basalt_sheet", "y": 180 },
+    "facing=west":  { "model": "cinderbane:block/basalt_sheet", "y": 270 },
+    "facing=east":  { "model": "cinderbane:block/basalt_sheet", "y": 90 }
+  }
+}
