@@ -25,7 +25,8 @@ public class LavaWalkersEvent {
             World world = livingEntity.getEntityWorld();
             if (livingEntity.getActivePotionEffect(RegistryHandler.LAVA_WALKERS_EFFECT.get()) != null) {
 
-                BlockPos checkingPos = livingEntity.getPosition();
+                BlockPos checkingPos = livingEntity.getPosition().north(3).west(3);
+
                 int z;
                 for (z = 0; z<= 7; ++z) {
                     int x;

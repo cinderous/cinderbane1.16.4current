@@ -1,0 +1,12 @@
+{
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "cinderbane:cinderbane"
+    },
+    "seed": 0,
+    "settings": "cinderbane:cinderbane"
+  },
+  "type": "cinderbane:cinderbane"
+}
