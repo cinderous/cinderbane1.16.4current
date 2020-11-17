@@ -45,6 +45,29 @@ public class CinderousArmorLivingEquipmentChange {
             }
         }
 
+        if (event.getEntityLiving() != null) {
+            LivingEntity livingEntity = event.getEntityLiving();
+            World world = livingEntity.getEntityWorld();
+
+            //Iterable<ItemStack> stacks =
+
+            for (ItemStack armor : livingEntity.getArmorInventoryList()) {
+                //Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(armor);
+                if (livingEntity.hasItemInSlot(EquipmentSlotType.FEET)) {
+                    if (armor.getItem() != RegistryHandler.WATER_STRIDERS.get()) {
+                        //livingEntity.removePotionEffect((RegistryHandler.LAVA_WALKERS_EFFECT.get()));
+                        walksOnWater = false;
+                    }
+                }
+                if (armor.getItem() == RegistryHandler.WATER_STRIDERS.get() && !walksOnWater) {
+                    walksOnWater = true;
+                    // livingEntity.addPotionEffect(new EffectInstance(RegistryHandler.LAVA_WALKERS_EFFECT.get(), 10000, 255));
+                }
+
+
+            }
+        }
+
 
     }
 }

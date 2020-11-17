@@ -12,7 +12,7 @@
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "surface_builder": "cinderbane:cinderbane",
+  "surface_builder": "cinderbane:hyperlane",
   "carvers": {
     "air": [
       "minecraft:cave",

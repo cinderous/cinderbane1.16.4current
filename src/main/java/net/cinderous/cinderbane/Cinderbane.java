@@ -1,9 +1,11 @@
 package net.cinderous.cinderbane;
 
+import net.cinderous.cinderbane.util.packethandler.MyMessage;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,6 +17,8 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +29,18 @@ import java.util.stream.Collectors;
 public class Cinderbane
 {
     // Directly reference a log4j logger.
+    public static final String NETWORK_PROTOCOL = "2";
+
+    public static final SimpleChannel INSTANCE = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(Cinderbane.MODID, "net"))
+
+            .networkProtocolVersion(() -> NETWORK_PROTOCOL)
+
+            .clientAcceptedVersions(NETWORK_PROTOCOL::equals)
+
+            .serverAcceptedVersions(NETWORK_PROTOCOL::equals)
+
+            .simpleChannel();
+
     public static final Logger LOGGER = LogManager.getLogger();
 
     public static final String NAME = "Cinderbane";
@@ -40,11 +56,23 @@ public class Cinderbane
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-
+        setupMessages();
         RegistryHandler.init();
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public void setupMessages(){
+
+        INSTANCE.messageBuilder(MyMessage.class, 0)
+
+                .encoder(MyMessage::serialize).decoder(MyMessage::deserialize)
+
+                .consumer(MyMessage::handle)
+
+                .add();
+
     }
 
     private void setup(final FMLCommonSetupEvent event)

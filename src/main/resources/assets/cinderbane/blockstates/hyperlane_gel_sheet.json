@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "cinderbane:block/hyperlane_gel_sheet" },
+    "facing=south": { "model": "cinderbane:block/hyperlane_gel_sheet", "y": 180 },
+    "facing=west":  { "model": "cinderbane:block/hyperlane_gel_sheet", "y": 270 },
+    "facing=east":  { "model": "cinderbane:block/hyperlane_gel_sheet", "y": 90 }
+  }
+}

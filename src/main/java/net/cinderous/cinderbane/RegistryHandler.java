@@ -1,8 +1,12 @@
 package net.cinderous.cinderbane;
 
 import net.cinderous.cinderbane.block.BasaltSheet;
+import net.cinderous.cinderbane.block.HyperlaneGelBlock;
+import net.cinderous.cinderbane.block.HyperlaneGelSheet;
 import net.cinderous.cinderbane.effect.LavaWalkersEffect;
+import net.cinderous.cinderbane.effect.WaterStridersEffect;
 import net.cinderous.cinderbane.item.LavaWalkers;
+import net.cinderous.cinderbane.item.WaterStriders;
 import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -58,6 +62,8 @@ public class RegistryHandler
     public static final RegistryObject<Block> CINDERBANE_LOG = BLOCKS.register("cinderbane_log", () -> new RotatedPillarBlock(AbstractBlock.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
     public static final RegistryObject<Block> CINDERBANE_LEAVES = BLOCKS.register("cinderbane_leaves", () -> new Block(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).notSolid()));
     //public static final RegistryObject<Block> CINDERBANE_TREE_POD = BLOCKS.register("cinderbane_tree_pod", () -> new CinderbaneTreePod(Block.Properties.create(Material.IRON)));
+    public static final RegistryObject<Block> HYPERLANE_GEL_BLOCK = BLOCKS.register("hyperlane_gel_block", () -> new HyperlaneGelBlock(Block.Properties.create(Material.WATER)));
+    public static final RegistryObject<Block> HYPERLANE_GEL_SHEET = BLOCKS.register("hyperlane_gel_sheet", () -> new HyperlaneGelSheet(Block.Properties.from(RegistryHandler.HYPERLANE_GEL_BLOCK.get())));
     //Blocks Item
     public static final RegistryObject<Item> CINDIRT_ITEM = ITEMS.register("cindirt", () -> new BlockItem(CINDIRT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> BASALT_SHEET_ITEM = ITEMS.register("basalt_sheet", () -> new BlockItem(BASALT_SHEET.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
@@ -68,11 +74,17 @@ public class RegistryHandler
 
     //Equipment Armor
     public static final RegistryObject<ArmorItem> LAVA_WALKERS = ITEMS.register("lava_walkers",
-            () -> new LavaWalkers(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+            () -> new LavaWalkers(CinderbaneArmorMaterial.LAVAWALKERS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+
+    public static final RegistryObject<ArmorItem> WATER_STRIDERS = ITEMS.register("water_striders",
+            () -> new WaterStriders(CinderbaneArmorMaterial.WATERSTRIDERS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
 
     //Effects
     public static final RegistryObject<Effect> LAVA_WALKERS_EFFECT = EFFECTS.register("lava_walkers_effect",
             () -> new LavaWalkersEffect(EffectType.BENEFICIAL, 37848743));
+
+    public static final RegistryObject<Effect> WATER_STRIDERS_EFFECT = EFFECTS.register("water_striders_effect",
+            () -> new WaterStridersEffect(EffectType.BENEFICIAL, 37848743));
 
 //    //Biomes
 //    //Biomes
