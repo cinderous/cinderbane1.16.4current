@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class LavaSquidRender   extends MobRenderer<LavaSquid, LavaSquidModel<LavaSquid>> {
 
     protected static final ResourceLocation TEXTURE = new ResourceLocation(Cinderbane.MODID,
-            "textures/entities/cinderling.png");
+            "textures/entities/lava_squid.png");
 
     public LavaSquidRender(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new LavaSquidModel<LavaSquid>(), 0.5f);
