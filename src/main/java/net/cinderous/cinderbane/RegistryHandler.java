@@ -3,22 +3,34 @@ package net.cinderous.cinderbane;
 import net.cinderous.cinderbane.block.BasaltSheet;
 import net.cinderous.cinderbane.block.HyperlaneGelBlock;
 import net.cinderous.cinderbane.block.HyperlaneGelSheet;
+import net.cinderous.cinderbane.effect.CinderousHelmetEffect;
 import net.cinderous.cinderbane.effect.LavaWalkersEffect;
 import net.cinderous.cinderbane.effect.WaterStridersEffect;
+import net.cinderous.cinderbane.entity.LavaSquid;
+import net.cinderous.cinderbane.item.CinderousHelmet;
+import net.cinderous.cinderbane.block.CinderwoodTreePod;
 import net.cinderous.cinderbane.item.LavaWalkers;
 import net.cinderous.cinderbane.item.WaterStriders;
 import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
+import net.cinderous.cinderbane.tileentity.CinderwoodTreeBuilderTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -26,7 +38,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = Cinderbane.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class RegistryHandler
@@ -37,18 +48,18 @@ public class RegistryHandler
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
         BIOMES.register(FMLJavaModLoadingContext.get().getModEventBus());
         EFFECTS.register(FMLJavaModLoadingContext.get().getModEventBus());
-//        ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
 //        BIOMES.register(FMLJavaModLoadingContext.get().getModEventBus());
-//        TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cinderbane.MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cinderbane.MODID);
     private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Cinderbane.MODID);
     private static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, Cinderbane.MODID);
-
+    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Cinderbane.MODID);
 //    private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Cinderbane.MODID);
-//    private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cinderbane.MODID);
+    private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cinderbane.MODID);
 //    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Cinderbane.MODID);
 //    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Cinderbane.MODID);
     //
@@ -64,11 +75,13 @@ public class RegistryHandler
     //public static final RegistryObject<Block> CINDERBANE_TREE_POD = BLOCKS.register("cinderbane_tree_pod", () -> new CinderbaneTreePod(Block.Properties.create(Material.IRON)));
     public static final RegistryObject<Block> HYPERLANE_GEL_BLOCK = BLOCKS.register("hyperlane_gel_block", () -> new HyperlaneGelBlock(Block.Properties.create(Material.WATER)));
     public static final RegistryObject<Block> HYPERLANE_GEL_SHEET = BLOCKS.register("hyperlane_gel_sheet", () -> new HyperlaneGelSheet(Block.Properties.from(RegistryHandler.HYPERLANE_GEL_BLOCK.get())));
+    public static final RegistryObject<Block> CINDERWOOD_TREE_POD = BLOCKS.register("cinderwood_tree_pod", () -> new CinderwoodTreePod(Block.Properties.create(Material.WOOD)));
     //Blocks Item
     public static final RegistryObject<Item> CINDIRT_ITEM = ITEMS.register("cindirt", () -> new BlockItem(CINDIRT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> BASALT_SHEET_ITEM = ITEMS.register("basalt_sheet", () -> new BlockItem(BASALT_SHEET.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERBANE_LOG_ITEM = ITEMS.register("cinderbane_log", () -> new BlockItem(CINDERBANE_LOG.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERBANE_LEAVES_ITEM = ITEMS.register("cinderbane_leaves", () -> new BlockItem(CINDERBANE_LEAVES.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<Item> CINDERWOOD_TREE_POD_ITEM = ITEMS.register("cinderwood_tree_pod", () -> new BlockItem(CINDERWOOD_TREE_POD.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     //Items
     //public static final RegistryObject<Item> SPELLDEV = ITEMS.register("spelldev", () -> new SpellDev(new Item.Properties().group(GeomancyAndTerraforming.GEOMANCYANDTERRAFORMING_TAB)));
 
@@ -79,12 +92,37 @@ public class RegistryHandler
     public static final RegistryObject<ArmorItem> WATER_STRIDERS = ITEMS.register("water_striders",
             () -> new WaterStriders(CinderbaneArmorMaterial.WATERSTRIDERS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
 
+    public static final RegistryObject<ArmorItem> CINDEROUS_HELMET = ITEMS.register("cinderous_helmet",
+            () -> new CinderousHelmet(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+
     //Effects
     public static final RegistryObject<Effect> LAVA_WALKERS_EFFECT = EFFECTS.register("lava_walkers_effect",
             () -> new LavaWalkersEffect(EffectType.BENEFICIAL, 37848743));
 
     public static final RegistryObject<Effect> WATER_STRIDERS_EFFECT = EFFECTS.register("water_striders_effect",
             () -> new WaterStridersEffect(EffectType.BENEFICIAL, 37848743));
+
+    public static final RegistryObject<Effect> CINDEROUS_HELMET_EFFECT = EFFECTS.register("cinderous_helmet_effect",
+            () -> new CinderousHelmetEffect(EffectType.BENEFICIAL, 37848743));
+
+    //Tile Entities
+    public static final RegistryObject<TileEntityType<CinderwoodTreeBuilderTileEntity>> CINDERWOOD_TREE_BUILDER_TILE_ENTITY = TILE_ENTITIES.register("cinderwood_tree_builder_tile_entity", () -> TileEntityType.Builder
+            .create(CinderwoodTreeBuilderTileEntity::new, RegistryHandler.CINDERWOOD_TREE_POD.get()).build(null));
+
+    //Entities
+    public static final RegistryObject<EntityType<LavaSquid>> LAVA_SQUID = ENTITIES
+            .register("lava_squid",
+                    () -> EntityType.Builder.<LavaSquid>create(LavaSquid::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.3f)
+                            .build(new ResourceLocation(Cinderbane.MODID, "lava_squid").toString()));
+    //Entity Spawn and Attributes
+    @SubscribeEvent
+    public static void onRegisterEntityTypes(RegistryEvent.Register<EntityType<?>> event)
+    {
+        EntitySpawnPlacementRegistry.register(RegistryHandler.LAVA_SQUID.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canSpawnOn);
+        GlobalEntityTypeAttributes.put(RegistryHandler.LAVA_SQUID.get(), LavaSquid.registerAttributeMap().create());
+    }
+
 
 //    //Biomes
 //    //Biomes

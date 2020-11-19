@@ -1,6 +1,7 @@
 package net.cinderous.cinderbane.util.packethandler;
 
 import net.cinderous.cinderbane.Cinderbane;
+import net.cinderous.cinderbane.event.WaterStridersEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketBuffer;
@@ -11,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class MyMessage{
@@ -87,14 +89,15 @@ public class MyMessage{
 
                 World world = context.getSender().world;
                 Cinderbane.LOGGER.info(world);
-                LivingEntity livingEntity = world.getClosestPlayer(message.pos.getX(), message.pos.getY(), message.pos.getZ(), 1000,true);
-                livingEntity.addVelocity(0,-5,0);
-                Cinderbane.LOGGER.info("ACHIEVED THE REQUIRED SPEED TICKS");
+                if(!world.isRemote) {
+                    LivingEntity livingEntity = world.getClosestPlayer(message.pos.getX(), message.pos.getY(), message.pos.getZ(), 5000,false);
+
+                    Cinderbane.LOGGER.info("ACHIEVED THE REQUIRED SPEED TICKS");
 
 
 
-                //HyperlaneLivingEvent.teleportToHyphinity(livingEntity, message.speedAchieved);
-
+                    WaterStridersEvent.teleportToHyphinity(livingEntity, message.speedAchieved);
+                }
 
             });
         }

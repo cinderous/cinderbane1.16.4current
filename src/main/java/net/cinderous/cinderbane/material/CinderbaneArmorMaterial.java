@@ -16,7 +16,8 @@ import java.util.function.Supplier;
 public enum CinderbaneArmorMaterial implements IArmorMaterial {
     // name, durability, protection, enchantability, toughness
     LAVAWALKERS("lavawalkers", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get())),
-    WATERSTRIDERS("waterstriders", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get()));
+    WATERSTRIDERS("waterstriders", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get())),
+    CINDEROUS("cinderous", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get()));
 
     // borrowed from vanilla
     private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};

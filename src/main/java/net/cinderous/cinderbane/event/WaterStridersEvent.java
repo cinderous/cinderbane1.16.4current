@@ -3,13 +3,22 @@ package net.cinderous.cinderbane.event;
 import net.cinderous.cinderbane.Cinderbane;
 import net.cinderous.cinderbane.RegistryHandler;
 import net.cinderous.cinderbane.util.packethandler.MyMessage;
+import net.cinderous.cinderbane.world.teleporter.HyperlaneSurfaceFinderTeleporter;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.core.jmx.Server;
 
 @Mod.EventBusSubscriber(modid = Cinderbane.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WaterStridersEvent {
@@ -17,7 +26,11 @@ public class WaterStridersEvent {
     public static boolean speedAchieved = false;
     public static int tick;
 
-
+    public static RegistryKey<World> getHyperlaneDimension(){
+        ResourceLocation resourcelocation = new ResourceLocation("cinderbane:hyperlane");
+        RegistryKey<World> registrykey = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, resourcelocation);
+        return registrykey;
+    }
 
     @SubscribeEvent
     public static void WaterStridersEvent (LivingEvent event) {
@@ -58,6 +71,7 @@ public class WaterStridersEvent {
             }
         }
 
+
 //                world.getBlockState(livingEntity.getPosition()) == Blocks.AIR.getDefaultState();
 //
 //                if (world.getBlockState(livingEntity.getPosition()) == Blocks.AIR.getDefaultState() || world.getBlockState(livingEntity.getPosition()) == Blocks.WATER.getDefaultState()) {
@@ -68,5 +82,19 @@ public class WaterStridersEvent {
 //                    }
 //                }
             }
+
+    public static boolean teleportToHyphinity(LivingEntity livingEntity, Boolean speedAchieved) {
+        World world = livingEntity.getEntityWorld();
+        ServerWorld dimWorld = world.getServer().getWorld(getHyperlaneDimension());
+
+        if (speedAchieved && !world.isRemote) {
+
+            HyperlaneSurfaceFinderTeleporter tp = new HyperlaneSurfaceFinderTeleporter(livingEntity.getPosition());
+            livingEntity.changeDimension(dimWorld, tp);
+            speedAchieved = false;
+            return true;
         }
+        return false;
+    }
+}
 
