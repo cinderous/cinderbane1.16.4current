@@ -1,6 +1,7 @@
 package net.cinderous.cinderbane;
 
 import net.cinderous.cinderbane.util.packethandler.MyMessage;
+import net.cinderous.cinderbane.world.feature.FeatureRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -64,7 +65,7 @@ public class Cinderbane
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         setupMessages();
         RegistryHandler.init();
-
+//
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -86,6 +87,12 @@ public class Cinderbane
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        //FEATURES registration
+        event.enqueueWork(() -> {
+
+            FeatureRegistry.registerConfiguredFeatures();
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
