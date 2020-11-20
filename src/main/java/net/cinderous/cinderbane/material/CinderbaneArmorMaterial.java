@@ -17,6 +17,7 @@ public enum CinderbaneArmorMaterial implements IArmorMaterial {
     // name, durability, protection, enchantability, toughness
     LAVAWALKERS("lavawalkers", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get())),
     WATERSTRIDERS("waterstriders", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get())),
+    HYPHINITY("hyphinity", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get())),
     CINDEROUS("cinderous", 4, new int[]{1, 2, 3, 1}, 7, 0.0f, 0.0f, () -> Ingredient.fromItems(RegistryHandler.CINDIRT.get()));
 
     // borrowed from vanilla

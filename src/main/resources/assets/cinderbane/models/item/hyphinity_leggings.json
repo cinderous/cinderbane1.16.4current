@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "cinderbane:items/hyphinity_leggings"
+  }
+}

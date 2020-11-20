@@ -91,10 +91,18 @@ public class RegistryHandler
 
     public static final RegistryObject<ArmorItem> WATER_STRIDERS = ITEMS.register("water_striders",
             () -> new WaterStriders(CinderbaneArmorMaterial.WATERSTRIDERS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
-
+    //Cinderous Armor Set
     public static final RegistryObject<ArmorItem> CINDEROUS_HELMET = ITEMS.register("cinderous_helmet",
             () -> new CinderousHelmet(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
-
+    //Hyphinity Armor Set
+    public static final RegistryObject<ArmorItem> HYPHINITY_HELMET = ITEMS.register("hyphinity_helmet",
+            () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> HYPHINITY_BOOTS = ITEMS.register("hyphinity_boots",
+            () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.HEAD, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> HYPHINITY_LEGGINGS = ITEMS.register("hyphinity_leggings",
+            () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.LEGS, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> HYPHINITY_CHESTPLATE = ITEMS.register("hyphinity_chestplate",
+            () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.CHEST, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     //Effects
     public static final RegistryObject<Effect> LAVA_WALKERS_EFFECT = EFFECTS.register("lava_walkers_effect",
             () -> new LavaWalkersEffect(EffectType.BENEFICIAL, 37848743));

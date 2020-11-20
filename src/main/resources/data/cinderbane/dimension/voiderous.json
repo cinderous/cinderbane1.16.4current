@@ -1,0 +1,12 @@
+{
+  "generator": {
+    "type": "minecraft:noise",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "cinderbane:voiderous_abyss"
+    },
+    "seed": 0,
+    "settings": "cinderbane:voiderous_noise_settings"
+  },
+  "type": "cinderbane:voiderous_dimension_type"
+}
