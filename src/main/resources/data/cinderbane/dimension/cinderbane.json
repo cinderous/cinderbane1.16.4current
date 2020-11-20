@@ -3,7 +3,29 @@
     "type": "minecraft:noise",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "cinderbane:cinderbane"
+      "biome": "cinderbane:cinderbane",
+      "biomes": [
+        {
+          "parameters": {
+            "altitude": 0.1,
+            "weirdness": 0.0,
+            "offset": 0.0,
+            "temperature": 0.425,
+            "humidity": -0.05
+          },
+          "biome": "cinderbane:cinderbane"
+        },
+        {
+          "parameters": {
+            "altitude": 0.1,
+            "weirdness": 0.0,
+            "offset": 0.0,
+            "temperature": 0.425,
+            "humidity": -0.05
+          },
+          "biome": "cinderbane:cinderbane_frozen"
+        }
+      ]
     },
     "seed": 0,
     "settings": "cinderbane:cinderbane"
