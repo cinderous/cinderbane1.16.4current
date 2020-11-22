@@ -1,6 +1,7 @@
 package net.cinderous.cinderbane;
 
 import net.cinderous.cinderbane.util.packethandler.MyMessage;
+import net.cinderous.cinderbane.util.packethandler.TesseractPacketHandler;
 import net.cinderous.cinderbane.world.feature.FeatureRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -79,6 +80,15 @@ public class Cinderbane
                 .consumer(MyMessage::handle)
 
                 .add();
+
+        INSTANCE.messageBuilder(TesseractPacketHandler.class, 0)
+
+                .encoder(TesseractPacketHandler::serialize).decoder(TesseractPacketHandler::deserialize)
+
+                .consumer(TesseractPacketHandler::handle)
+
+                .add();
+
 
     }
 

@@ -1,5 +1,6 @@
 package net.cinderous.cinderbane.tileentity;
 
+import net.cinderous.cinderbane.Cinderbane;
 import net.cinderous.cinderbane.RegistryHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
@@ -63,10 +64,15 @@ public class CinderousTesseractTileEntity extends TileEntity implements ITickabl
         getTank().readFromNBT(tag);
     }
 
+
+
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         tag = super.write(tag);
         getTank().writeToNBT(tag);
+        Cinderbane.LOGGER.info(tag + "tag");
         return tag;
     }
+
+
 }

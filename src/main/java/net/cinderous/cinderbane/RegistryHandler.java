@@ -8,11 +8,13 @@ import net.cinderous.cinderbane.entity.CinderousZealot;
 import net.cinderous.cinderbane.entity.HyphinityWisp;
 import net.cinderous.cinderbane.entity.LavaSquid;
 import net.cinderous.cinderbane.item.CinderousHelmet;
+import net.cinderous.cinderbane.item.CinderousTesseractItem;
 import net.cinderous.cinderbane.item.LavaWalkers;
 import net.cinderous.cinderbane.item.WaterStriders;
 import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
 import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
 import net.cinderous.cinderbane.tileentity.CinderwoodTreeBuilderTileEntity;
+import net.cinderous.cinderbane.util.CinderbaneItemTier;
 import net.cinderous.cinderbane.world.feature.CinderkelpFeature;
 import net.cinderous.cinderbane.world.feature.FeatureRegistry;
 import net.minecraft.block.*;
@@ -103,7 +105,8 @@ public class RegistryHandler
 
     public static final RegistryObject<Item> CINDERKELP_ITEM = ITEMS.register("cinderkelp", () -> new BlockItem(CINDERKELP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERKELP_TOP_ITEM = ITEMS.register("cinderkelp_top", () -> new BlockItem(CINDERKELP_TOP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
-    public static final RegistryObject<Item> CINDEROUS_TESSERACT_ITEM = ITEMS.register("cinderous_tesseract_item", () -> new BlockItem(CINDEROUS_TESSERACT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    //TESSERACT ITEM BLOCK
+    public static final RegistryObject<Item> CINDEROUS_TESSERACT_ITEM = ITEMS.register("cinderous_tesseract_item", () -> new CinderousTesseractItem(CINDEROUS_TESSERACT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB).setNoRepair().maxDamage(8000)));
 
 
     //Items

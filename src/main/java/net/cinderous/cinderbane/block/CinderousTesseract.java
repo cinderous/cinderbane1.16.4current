@@ -1,6 +1,10 @@
 package net.cinderous.cinderbane.block;
 
+import net.cinderous.cinderbane.Cinderbane;
+import net.cinderous.cinderbane.RegistryHandler;
 import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
+import net.cinderous.cinderbane.util.packethandler.MyMessage;
+import net.cinderous.cinderbane.util.packethandler.TesseractPacketHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,6 +17,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -29,12 +34,15 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.capability.templates.VoidFluidHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.rmi.registry.Registry;
 
 public class CinderousTesseract extends Block {
     private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static int tankAmount = 0;
 
     public CinderousTesseract() {
         super(AbstractBlock.Properties.create(Material.ROCK)
@@ -133,4 +141,37 @@ public class CinderousTesseract extends Block {
 
         return ActionResultType.SUCCESS;
     }
+
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+
+        if (!worldIn.isRemote) {
+
+
+            TileEntity te = worldIn.getTileEntity(pos);
+
+            if (te instanceof CinderousTesseractTileEntity) {
+            FluidStack tankFluidStack = ((CinderousTesseractTileEntity) te).getTank().getFluid();
+            tankAmount = tankFluidStack.getAmount();
+
+                Cinderbane.LOGGER.info(tankAmount);
+
+
+            }
+
+            TesseractPacketHandler tesseractPacket = (new TesseractPacketHandler(tankAmount));
+            Cinderbane.LOGGER.info(tesseractPacket);
+            Cinderbane.INSTANCE.sendToServer(tesseractPacket);
+
+
+
+            super.onBlockHarvested(worldIn, pos, state, player);
+
+
+        }
+
+
+    }
+
+
 }
