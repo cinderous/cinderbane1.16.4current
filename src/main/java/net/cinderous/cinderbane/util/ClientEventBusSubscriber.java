@@ -2,6 +2,7 @@ package net.cinderous.cinderbane.util;
 
 import net.cinderous.cinderbane.Cinderbane;
 import net.cinderous.cinderbane.RegistryHandler;
+import net.cinderous.cinderbane.client.entity.model.render.CinderousZealotRender;
 import net.cinderous.cinderbane.client.entity.model.render.HyphinityWispRender;
 import net.cinderous.cinderbane.client.entity.model.render.LavaSquidRender;
 import net.minecraft.client.renderer.RenderType;
@@ -23,6 +24,7 @@ public class ClientEventBusSubscriber {
     public static void registerRenders(ModelRegistryEvent e) {
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.LAVA_SQUID.get(), LavaSquidRender::new);
         RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.HYPHINITY_WISP.get(), HyphinityWispRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.CINDEROUS_ZEALOT.get(), CinderousZealotRender::new);
 
     }
     @SubscribeEvent

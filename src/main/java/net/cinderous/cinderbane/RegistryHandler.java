@@ -6,6 +6,7 @@ import net.cinderous.cinderbane.block.HyperlaneGelSheet;
 import net.cinderous.cinderbane.effect.CinderousHelmetEffect;
 import net.cinderous.cinderbane.effect.LavaWalkersEffect;
 import net.cinderous.cinderbane.effect.WaterStridersEffect;
+import net.cinderous.cinderbane.entity.CinderousZealot;
 import net.cinderous.cinderbane.entity.HyphinityWisp;
 import net.cinderous.cinderbane.entity.LavaSquid;
 import net.cinderous.cinderbane.item.CinderousHelmet;
@@ -40,6 +41,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -63,6 +65,7 @@ public class RegistryHandler
 //        BIOMES.register(FMLJavaModLoadingContext.get().getModEventBus());
         TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        STRUCTURES.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cinderbane.MODID);
@@ -74,6 +77,7 @@ public class RegistryHandler
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Cinderbane.MODID);
 //    private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Cinderbane.MODID);
     private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Cinderbane.MODID);
+    private static final DeferredRegister<Structure<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.STRUCTURE_FEATURES, Cinderbane.MODID);
     //
 
 
@@ -140,6 +144,11 @@ public class RegistryHandler
                     () -> EntityType.Builder.<HyphinityWisp>create(HyphinityWisp::new, EntityClassification.CREATURE)
                             .size(0.9f, 1.3f)
                             .build(new ResourceLocation(Cinderbane.MODID, "hyphinity_wisp").toString()));
+    public static final RegistryObject<EntityType<CinderousZealot>> CINDEROUS_ZEALOT = ENTITIES
+            .register("cinderous_zealot",
+                    () -> EntityType.Builder.<CinderousZealot>create(CinderousZealot::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.3f)
+                            .build(new ResourceLocation(Cinderbane.MODID, "cinderous_zealot").toString()));
     //Entity Spawn and Attributes
     @SubscribeEvent
     public static void onRegisterEntityTypes(RegistryEvent.Register<EntityType<?>> event)
@@ -149,6 +158,9 @@ public class RegistryHandler
 
         EntitySpawnPlacementRegistry.register(RegistryHandler.HYPHINITY_WISP.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canSpawnOn);
         GlobalEntityTypeAttributes.put(RegistryHandler.HYPHINITY_WISP.get(), LavaSquid.registerAttributeMap().create());
+
+        EntitySpawnPlacementRegistry.register(RegistryHandler.CINDEROUS_ZEALOT.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canSpawnOn);
+        GlobalEntityTypeAttributes.put(RegistryHandler.CINDEROUS_ZEALOT.get(), LavaSquid.registerAttributeMap().create());
     }
 
 //features
@@ -157,6 +169,9 @@ public class RegistryHandler
 
     private static <F extends Feature<?>> RegistryObject<F> createFeature(String name, Supplier<F> feature) {
         return FEATURES.register(name, feature);
+
+        //Structures
+        
 
 
 //    //Biomes
