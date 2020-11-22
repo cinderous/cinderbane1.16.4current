@@ -1,28 +1,67 @@
-//package net.cinderous.cinderbane.util;
-//
-//import com.mojang.blaze3d.systems.RenderSystem;
-//import net.cinderous.cinderbane.Cinderbane;
-//import net.cinderous.cinderbane.RegistryHandler;
-//import net.minecraft.block.BlockState;
-//import net.minecraft.block.material.Material;
-//import net.minecraft.client.Minecraft;
-//import net.minecraft.client.entity.player.ClientPlayerEntity;
-//import net.minecraft.client.renderer.*;
-//import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-//import net.minecraft.entity.Entity;
-//import net.minecraft.potion.EffectInstance;
-//import net.minecraft.util.ResourceLocation;
-//import net.minecraft.util.math.BlockPos;
-//import net.minecraft.util.math.vector.Vector3d;
-//import net.minecraft.world.IWorldReader;
-//import net.minecraftforge.api.distmarker.Dist;
-//import net.minecraftforge.client.event.RenderWorldLastEvent;
-//import net.minecraftforge.common.extensions.IForgeBlock;
-//import net.minecraftforge.eventbus.api.SubscribeEvent;
-//import net.minecraftforge.fml.common.Mod;
-//
-//@Mod.EventBusSubscriber(modid = Cinderbane.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-//public class ForgeRenderWorldEvent {
+package net.cinderous.cinderbane.util;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.cinderous.cinderbane.Cinderbane;
+import net.cinderous.cinderbane.RegistryHandler;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IWorldReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.extensions.IForgeBlock;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+@Mod.EventBusSubscriber(modid = Cinderbane.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+public class ForgeRenderWorldEvent {
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void fogDensity(EntityViewRenderEvent.FogDensity event) {
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player == null) {
+            return;
+        }
+        if (player.isCreative() || player.isSpectator()) {
+            event.setDensity(0f);
+            event.setCanceled(true);
+        } else if (canApply(player)) {
+            event.setDensity(0.03f);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void renderOverlay(RenderBlockOverlayEvent event) {
+        if (event.getOverlayType() != RenderBlockOverlayEvent.OverlayType.FIRE) {
+            return;
+        }
+        if (event.getPlayer().isCreative()) {
+            event.setCanceled(true);
+        } else if (canApply(event.getPlayer())) {
+            event.getMatrixStack().translate(0, -0.25, 0);
+        }
+    }
+
+    public static boolean canApply(PlayerEntity player) {
+        return player.areEyesInFluid(FluidTags.LAVA) && player.isPotionActive(RegistryHandler.CINDEROUS_HELMET_EFFECT.get());
+    }
+
 //    private static final ResourceLocation TEXTURE_CLEARVISION_OVERLAY = new ResourceLocation(Cinderbane.MODID, "textures/misc/cleavision_overlay.png");
 //
 //    @SubscribeEvent
@@ -63,6 +102,6 @@
 //        WorldVertexBufferUploader.draw(builder);
 //        RenderSystem.disableBlend();
 //    }
-//
-//
-//}
+
+
+}

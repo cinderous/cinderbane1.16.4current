@@ -1,8 +1,6 @@
 package net.cinderous.cinderbane;
 
-import net.cinderous.cinderbane.block.BasaltSheet;
-import net.cinderous.cinderbane.block.HyperlaneGelBlock;
-import net.cinderous.cinderbane.block.HyperlaneGelSheet;
+import net.cinderous.cinderbane.block.*;
 import net.cinderous.cinderbane.effect.CinderousHelmetEffect;
 import net.cinderous.cinderbane.effect.LavaWalkersEffect;
 import net.cinderous.cinderbane.effect.WaterStridersEffect;
@@ -10,10 +8,10 @@ import net.cinderous.cinderbane.entity.CinderousZealot;
 import net.cinderous.cinderbane.entity.HyphinityWisp;
 import net.cinderous.cinderbane.entity.LavaSquid;
 import net.cinderous.cinderbane.item.CinderousHelmet;
-import net.cinderous.cinderbane.block.CinderwoodTreePod;
 import net.cinderous.cinderbane.item.LavaWalkers;
 import net.cinderous.cinderbane.item.WaterStriders;
 import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
+import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
 import net.cinderous.cinderbane.tileentity.CinderwoodTreeBuilderTileEntity;
 import net.cinderous.cinderbane.world.feature.CinderkelpFeature;
 import net.cinderous.cinderbane.world.feature.FeatureRegistry;
@@ -92,12 +90,22 @@ public class RegistryHandler
     public static final RegistryObject<Block> HYPERLANE_GEL_BLOCK = BLOCKS.register("hyperlane_gel_block", () -> new HyperlaneGelBlock(Block.Properties.create(Material.WATER)));
     public static final RegistryObject<Block> HYPERLANE_GEL_SHEET = BLOCKS.register("hyperlane_gel_sheet", () -> new HyperlaneGelSheet(Block.Properties.from(RegistryHandler.HYPERLANE_GEL_BLOCK.get())));
     public static final RegistryObject<Block> CINDERWOOD_TREE_POD = BLOCKS.register("cinderwood_tree_pod", () -> new CinderwoodTreePod(Block.Properties.create(Material.WOOD)));
+    //Cinderbane Dimension Blocks
+    public static final RegistryObject<Block> CINDERKELP = BLOCKS.register("cinderkelp", () -> new Cinderkelp(Block.Properties.create(Material.OCEAN_PLANT).doesNotBlockMovement().notSolid()));
+    public static final RegistryObject<Block> CINDERKELP_TOP = BLOCKS.register("cinderkelp_top", () -> new CinderkelpTop(Block.Properties.create(Material.OCEAN_PLANT).doesNotBlockMovement().notSolid()));
+    public static final RegistryObject<Block> CINDEROUS_TESSERACT = BLOCKS.register("cinderous_tesseract", () -> new CinderousTesseract());
     //Blocks Item
     public static final RegistryObject<Item> CINDIRT_ITEM = ITEMS.register("cindirt", () -> new BlockItem(CINDIRT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> BASALT_SHEET_ITEM = ITEMS.register("basalt_sheet", () -> new BlockItem(BASALT_SHEET.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERBANE_LOG_ITEM = ITEMS.register("cinderbane_log", () -> new BlockItem(CINDERBANE_LOG.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERBANE_LEAVES_ITEM = ITEMS.register("cinderbane_leaves", () -> new BlockItem(CINDERBANE_LEAVES.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERWOOD_TREE_POD_ITEM = ITEMS.register("cinderwood_tree_pod", () -> new BlockItem(CINDERWOOD_TREE_POD.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+
+    public static final RegistryObject<Item> CINDERKELP_ITEM = ITEMS.register("cinderkelp", () -> new BlockItem(CINDERKELP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<Item> CINDERKELP_TOP_ITEM = ITEMS.register("cinderkelp_top", () -> new BlockItem(CINDERKELP_TOP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<Item> CINDEROUS_TESSERACT_ITEM = ITEMS.register("cinderous_tesseract_item", () -> new BlockItem(CINDEROUS_TESSERACT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+
+
     //Items
     //public static final RegistryObject<Item> SPELLDEV = ITEMS.register("spelldev", () -> new SpellDev(new Item.Properties().group(GeomancyAndTerraforming.GEOMANCYANDTERRAFORMING_TAB)));
 
@@ -132,6 +140,10 @@ public class RegistryHandler
     //Tile Entities
     public static final RegistryObject<TileEntityType<CinderwoodTreeBuilderTileEntity>> CINDERWOOD_TREE_BUILDER_TILE_ENTITY = TILE_ENTITIES.register("cinderwood_tree_builder_tile_entity", () -> TileEntityType.Builder
             .create(CinderwoodTreeBuilderTileEntity::new, RegistryHandler.CINDERWOOD_TREE_POD.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<CinderousTesseractTileEntity>> CINDEROUS_TESSERACT_TILE_ENTITY = TILE_ENTITIES.register("cinderous_tesseract_tile_entity", () -> TileEntityType.Builder
+            .create(CinderousTesseractTileEntity::new, RegistryHandler.CINDEROUS_TESSERACT.get()).build(null));
+
 
     //Entities
     public static final RegistryObject<EntityType<LavaSquid>> LAVA_SQUID = ENTITIES
@@ -171,7 +183,7 @@ public class RegistryHandler
         return FEATURES.register(name, feature);
 
         //Structures
-        
+
 
 
 //    //Biomes
