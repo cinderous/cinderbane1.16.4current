@@ -195,6 +195,8 @@ public class CinderousTesseractItem extends Item {
                     compoundnbt1.putInt("x", pos.getX());
                     compoundnbt1.putInt("y", pos.getY());
                     compoundnbt1.putInt("z", pos.getZ());
+                    int tankValue = stackIn.getDamage();
+                    //compoundnbt1.putInt("Amount", tankValue);
                     if (!compoundnbt1.equals(compoundnbt2)) {
                         tileentity.read(worldIn.getBlockState(pos), compoundnbt1);
                         tileentity.markDirty();

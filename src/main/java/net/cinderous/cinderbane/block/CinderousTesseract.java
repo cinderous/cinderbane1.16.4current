@@ -7,6 +7,7 @@ import net.cinderous.cinderbane.util.packethandler.MyMessage;
 import net.cinderous.cinderbane.util.packethandler.TesseractPacketHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -151,8 +152,8 @@ public class CinderousTesseract extends Block {
             TileEntity te = worldIn.getTileEntity(pos);
 
             if (te instanceof CinderousTesseractTileEntity) {
-            FluidStack tankFluidStack = ((CinderousTesseractTileEntity) te).getTank().getFluid();
-            tankAmount = tankFluidStack.getAmount();
+                FluidStack tankFluidStack = ((CinderousTesseractTileEntity) te).getTank().getFluid();
+                tankAmount = tankFluidStack.getAmount();
 
                 Cinderbane.LOGGER.info(tankAmount);
 
@@ -164,7 +165,6 @@ public class CinderousTesseract extends Block {
             Cinderbane.INSTANCE.sendToServer(tesseractPacket);
 
 
-
             super.onBlockHarvested(worldIn, pos, state, player);
 
 
@@ -173,5 +173,25 @@ public class CinderousTesseract extends Block {
 
     }
 
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        int tankAmount = 8000 + -stack.getDamage();
 
+        if (!worldIn.isRemote) {
+
+
+            TileEntity te = worldIn.getTileEntity(pos);
+
+            if (te instanceof CinderousTesseractTileEntity) {
+                FluidTank tankFluidTank = ((CinderousTesseractTileEntity) te).getTank();
+                tankFluidTank.fill(new FluidStack(Fluids.WATER.getFluid(), tankAmount), IFluidHandler.FluidAction.EXECUTE);
+
+                Cinderbane.LOGGER.info(tankAmount);
+
+
+            }
+
+        }
+    }
 }
