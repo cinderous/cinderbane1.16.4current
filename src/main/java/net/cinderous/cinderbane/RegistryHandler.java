@@ -1,19 +1,20 @@
 package net.cinderous.cinderbane;
 
 import net.cinderous.cinderbane.block.*;
+
+
 import net.cinderous.cinderbane.effect.CinderousHelmetEffect;
 import net.cinderous.cinderbane.effect.LavaWalkersEffect;
 import net.cinderous.cinderbane.effect.WaterStridersEffect;
 import net.cinderous.cinderbane.entity.CinderousZealot;
 import net.cinderous.cinderbane.entity.HyphinityWisp;
 import net.cinderous.cinderbane.entity.LavaSquid;
-import net.cinderous.cinderbane.item.CinderousHelmet;
-import net.cinderous.cinderbane.item.CinderousTesseractItem;
-import net.cinderous.cinderbane.item.LavaWalkers;
-import net.cinderous.cinderbane.item.WaterStriders;
+import net.cinderous.cinderbane.item.*;
 import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
+
 import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
 import net.cinderous.cinderbane.tileentity.CinderwoodTreeBuilderTileEntity;
+import net.cinderous.cinderbane.tileentity.CinderwormHeadTileEntity;
 import net.cinderous.cinderbane.util.CinderbaneItemTier;
 import net.cinderous.cinderbane.world.feature.CinderkelpFeature;
 import net.cinderous.cinderbane.world.feature.FeatureRegistry;
@@ -26,6 +27,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -42,6 +44,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
@@ -50,6 +53,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.awt.*;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Cinderbane.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -66,11 +70,13 @@ public class RegistryHandler
         TILE_ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FEATURES.register(FMLJavaModLoadingContext.get().getModEventBus());
         STRUCTURES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Cinderbane.MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Cinderbane.MODID);
     private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Cinderbane.MODID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Cinderbane.MODID);
     private static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, Cinderbane.MODID);
     private static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Cinderbane.MODID);
 //    private static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Cinderbane.MODID);
@@ -96,6 +102,8 @@ public class RegistryHandler
     public static final RegistryObject<Block> CINDERKELP = BLOCKS.register("cinderkelp", () -> new Cinderkelp(Block.Properties.create(Material.OCEAN_PLANT).doesNotBlockMovement().notSolid()));
     public static final RegistryObject<Block> CINDERKELP_TOP = BLOCKS.register("cinderkelp_top", () -> new CinderkelpTop(Block.Properties.create(Material.OCEAN_PLANT).doesNotBlockMovement().notSolid()));
     public static final RegistryObject<Block> CINDEROUS_TESSERACT = BLOCKS.register("cinderous_tesseract", () -> new CinderousTesseract());
+    public static final RegistryObject<Block> CINDERWORM_HEAD = BLOCKS.register("cinderworm_head", () -> new CinderwormHead());
+    //public static final RegistryObject<Block> CINDEROUS_CRYSTAL_MATRIX = BLOCKS.register("cinderous_crystal_matrix", () -> new CinderousCrystalMatrix());
     //Blocks Item
     public static final RegistryObject<Item> CINDIRT_ITEM = ITEMS.register("cindirt", () -> new BlockItem(CINDIRT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> BASALT_SHEET_ITEM = ITEMS.register("basalt_sheet", () -> new BlockItem(BASALT_SHEET.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
@@ -106,7 +114,9 @@ public class RegistryHandler
     public static final RegistryObject<Item> CINDERKELP_ITEM = ITEMS.register("cinderkelp", () -> new BlockItem(CINDERKELP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<Item> CINDERKELP_TOP_ITEM = ITEMS.register("cinderkelp_top", () -> new BlockItem(CINDERKELP_TOP.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     //TESSERACT ITEM BLOCK
-    public static final RegistryObject<Item> CINDEROUS_TESSERACT_ITEM = ITEMS.register("cinderous_tesseract_item", () -> new CinderousTesseractItem(CINDEROUS_TESSERACT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB).setNoRepair().maxDamage(8000)));
+    public static final RegistryObject<Item> CINDEROUS_TESSERACT_ITEM = ITEMS.register("cinderous_tesseract", () -> new CinderousTesseractItem(CINDEROUS_TESSERACT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB).setNoRepair().maxDamage(8000)));
+    public static final RegistryObject<Item> CINDERWORM_HEAD_ITEM = ITEMS.register("cinderworm_head", () -> new CinderwormHeadItem(CINDERWORM_HEAD.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    //public static final RegistryObject<Item> CINDEROUS_CRYSTAL_MATRIX_ITEM = ITEMS.register("cinderous_crystal_matrix_item", () -> new CinderousCrystalMatrixItem(CINDEROUS_CRYSTAL_MATRIX.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB).setNoRepair().maxDamage(8000)));
 
 
     //Items
@@ -120,7 +130,13 @@ public class RegistryHandler
             () -> new WaterStriders(CinderbaneArmorMaterial.WATERSTRIDERS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     //Cinderous Armor Set
     public static final RegistryObject<ArmorItem> CINDEROUS_HELMET = ITEMS.register("cinderous_helmet",
-            () -> new CinderousHelmet(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+            () -> new CinderousHelmet(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.HEAD, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> CINDEROUS_BOOTS = ITEMS.register("cinderous_boots",
+            () -> new ArmorItem(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> CINDEROUS_LEGGINGS = ITEMS.register("cinderous_leggings",
+            () -> new ArmorItem(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.LEGS, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+    public static final RegistryObject<ArmorItem> CINDEROUS_CHESTPLATE = ITEMS.register("cinderous_chestplate",
+            () -> new ArmorItem(CinderbaneArmorMaterial.CINDEROUS, EquipmentSlotType.CHEST, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     //Hyphinity Armor Set
     public static final RegistryObject<ArmorItem> HYPHINITY_HELMET = ITEMS.register("hyphinity_helmet",
             () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.FEET, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
@@ -130,6 +146,28 @@ public class RegistryHandler
             () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.LEGS, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
     public static final RegistryObject<ArmorItem> HYPHINITY_CHESTPLATE = ITEMS.register("hyphinity_chestplate",
             () -> new ArmorItem(CinderbaneArmorMaterial.HYPHINITY, EquipmentSlotType.CHEST, new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
+
+    //Containers
+//    private static RegistryObject<ContainerType<?>> registerContainer() {
+//        return CONTAINERS.register("cinderous_crystal_matrix_container",
+//                () -> new ContainerType<CinderousCrystalMatrixContainer>((windowId, inventory) -> new CinderousCrystalMatrixContainer(windowId, inventory)));
+//    }
+
+  //  public static final RegistryObject<ContainerType<CinderousCrystalMatrixContainer>> CINDEROUS_CRYSTAL_MATRIX_CONTAINER = CONTAINERS.register("cinderous_crystal_matrix_container", () -> IForgeContainerType.create(CinderousCrystalMatrixContainer::new);
+//    Container container = IForgeContainerType.create(((id, windowId, inv, data) -> new CinderousCrystalMatrixContainer(id, windowId, inv, data);
+
+//    public static final RegistryObject<ContainerType<CinderousCrystalMatrixContainer>> CINDEROUS_CRYSTAL_MATRIX_CONTAINER = CONTAINERS
+//            .register("cinderous_crystal_matrix_container", () -> IForgeContainerType.create(CinderousCrystalMatrixContainer::new));
+
+//    public static final RegistryObject<ContainerType<CinderousCrystalMatrixContainer>> CINDEROUS_CRYSTAL_MATRIX_CONTAINER = CONTAINERS.register(
+//            "cinderous_crystal_matrix_container", () -> IForgeContainerType.create(((windowId, inv, data) -> new CinderousCrystalMatrixContainer((windowId, inv, data))));
+//
+//    public static final RegistryObject<ContainerType> IRON_CHEST_CONTAINER = CONTAINERS.register(
+//            "iron_chest", () -> IForgeContainerType.create(CinderousCrystalMatrixContainer::new));
+//
+//    public static final RegistryObject<ContainerType<CinderousCrystalMatrixContainer>> CINDEROUS_CRYSTAL_MATRIX_CONTAINER = CONTAINERS
+//            .register("cinderous_crystal_matrix_container", () -> IForgeContainerType.create(CinderousCrystalMatrixContainer::new));
+
     //Effects
     public static final RegistryObject<Effect> LAVA_WALKERS_EFFECT = EFFECTS.register("lava_walkers_effect",
             () -> new LavaWalkersEffect(EffectType.BENEFICIAL, 37848743));
@@ -146,6 +184,12 @@ public class RegistryHandler
 
     public static final RegistryObject<TileEntityType<CinderousTesseractTileEntity>> CINDEROUS_TESSERACT_TILE_ENTITY = TILE_ENTITIES.register("cinderous_tesseract_tile_entity", () -> TileEntityType.Builder
             .create(CinderousTesseractTileEntity::new, RegistryHandler.CINDEROUS_TESSERACT.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<CinderwormHeadTileEntity>> CINDERWORM_HEAD_TILE_ENTITY = TILE_ENTITIES.register("cinderworm_head_tile_entity", () -> TileEntityType.Builder
+            .create(CinderwormHeadTileEntity::new, RegistryHandler.CINDERWORM_HEAD.get()).build(null));
+
+//    public static final RegistryObject<TileEntityType<CinderousCrystalMatrixTileEntity>> CINDEROUS_CRYSTAL_MATRIX_TILE_ENTITY = TILE_ENTITIES.register("cinderous_crystal_matrix_tile_enity", () -> TileEntityType.Builder
+//            .create(CinderousCrystalMatrixTileEntity::new, RegistryHandler.CINDEROUS_CRYSTAL_MATRIX.get()).build(null));
 
 
     //Entities

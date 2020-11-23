@@ -1,14 +1,10 @@
 package net.cinderous.cinderbane.item;
 
-import net.cinderous.cinderbane.Cinderbane;
-import net.cinderous.cinderbane.util.packethandler.MyMessage;
-import net.cinderous.cinderbane.util.packethandler.TesseractPacketHandler;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
@@ -31,33 +27,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
-public class CinderousTesseractItem extends Item {
+public class CinderwormHeadItem extends Item {
     @Deprecated
     private final Block block;
 
-    public CinderousTesseractItem(Block blockIn, Item.Properties builder) {
+    public CinderwormHeadItem(Block blockIn, Item.Properties builder) {
         super(builder);
         this.block = blockIn;
-
-        }
-
-    @Override
-    public boolean isDamageable() {
-        return true;
     }
-
-    @Override
-    public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
-        super.onCreated(stack, worldIn, playerIn);
-
-    }
-
-//    @Override
-//    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-//        return 0;
-//    }
 
     /**
      * Called when this item is used when targetting a Block
@@ -184,7 +162,6 @@ public class CinderousTesseractItem extends Item {
             CompoundNBT compoundnbt = stackIn.getChildTag("BlockEntityTag");
             if (compoundnbt != null) {
                 TileEntity tileentity = worldIn.getTileEntity(pos);
-
                 if (tileentity != null) {
                     if (!worldIn.isRemote && tileentity.onlyOpsCanSetNbt() && (player == null || !player.canUseCommandBlock())) {
                         return false;
@@ -196,8 +173,6 @@ public class CinderousTesseractItem extends Item {
                     compoundnbt1.putInt("x", pos.getX());
                     compoundnbt1.putInt("y", pos.getY());
                     compoundnbt1.putInt("z", pos.getZ());
-                    int tankValue = stackIn.getDamage();
-                    //compoundnbt1.putInt("Amount", tankValue);
                     if (!compoundnbt1.equals(compoundnbt2)) {
                         tileentity.read(worldIn.getBlockState(pos), compoundnbt1);
                         tileentity.markDirty();
@@ -252,4 +227,3 @@ public class CinderousTesseractItem extends Item {
         blockToItemMap.remove(this.getBlock());
     }
 }
-

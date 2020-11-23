@@ -3,7 +3,7 @@ package net.cinderous.cinderbane.block;
 import net.cinderous.cinderbane.Cinderbane;
 import net.cinderous.cinderbane.RegistryHandler;
 import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
-import net.cinderous.cinderbane.util.packethandler.MyMessage;
+import net.cinderous.cinderbane.tileentity.CinderwormHeadTileEntity;
 import net.cinderous.cinderbane.util.packethandler.TesseractPacketHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -13,13 +13,10 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.tags.Tag;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -27,25 +24,20 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fluids.capability.templates.VoidFluidHandler;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.rmi.registry.Registry;
 
-public class CinderousTesseract extends Block {
+public class CinderwormHead extends Block {
     private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
     public static int tankAmount = 0;
 
-    public CinderousTesseract() {
+    public CinderwormHead() {
         super(AbstractBlock.Properties.create(Material.ROCK)
                 .sound(SoundType.STONE)
                 .hardnessAndResistance(2.0f, 3.0f)
@@ -86,7 +78,7 @@ public class CinderousTesseract extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new CinderousTesseractTileEntity();
+        return new CinderwormHeadTileEntity();
     }
 
     @Override
