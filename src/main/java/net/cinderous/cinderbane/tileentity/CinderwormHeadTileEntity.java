@@ -22,16 +22,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class CinderwormHeadTileEntity extends TileEntity implements ITickableTileEntity {
-    protected FluidTank tank = new FluidTank(FluidAttributes.BUCKET_VOLUME * 8) {
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == Fluids.WATER;
-        }
-    };
 
-    public boolean tankConfigured = false;
 
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
+
 
     private int ticks;
 
@@ -39,19 +32,6 @@ public class CinderwormHeadTileEntity extends TileEntity implements ITickableTil
         super(RegistryHandler.CINDERWORM_HEAD_TILE_ENTITY.get());
     }
 
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return holder.cast();
-        return super.getCapability(capability, facing);
-    }
-
-    public FluidTank getTank() {
-
-
-        return this.tank;
-    }
 
     @Override
     public void tick() {
@@ -68,29 +48,8 @@ public class CinderwormHeadTileEntity extends TileEntity implements ITickableTil
         ticks++;
         if (ticks == 20) {
             ticks = 0;
-
-            this.tank.fill(new FluidStack(Fluids.WATER.getFluid(), 17), IFluidHandler.FluidAction.EXECUTE);
-            this.markDirty();
+            Cinderbane.LOGGER.info("Cinderworm Head is Active");
         }
     }
-
-
-    @Override
-    public void read(BlockState state, CompoundNBT tag) {
-        super.read(state, tag);
-        getTank().readFromNBT(tag);
-        Cinderbane.LOGGER.info(tag);
-    }
-
-
-
-    @Override
-    public CompoundNBT write(CompoundNBT tag) {
-        tag = super.write(tag);
-        getTank().writeToNBT(tag);
-        Cinderbane.LOGGER.info(tag + "tag");
-        return tag;
-    }
-
 
 }
