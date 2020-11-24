@@ -3,6 +3,7 @@ package net.cinderous.cinderbane.tileentity;
 import net.cinderous.cinderbane.Cinderbane;
 import net.cinderous.cinderbane.RegistryHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -20,36 +21,98 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.rmi.registry.Registry;
+import java.util.Random;
 
 public class CinderwormHeadTileEntity extends TileEntity implements ITickableTileEntity {
 
-
-
-
     private int ticks;
+    private boolean isHungry = false;
+    private BlockState currentFood;
+    public BlockPos down;
+    public BlockPos up;
+    public BlockPos north;
+    public BlockPos south;
+    public BlockPos west;
+    public BlockPos east;
 
     public CinderwormHeadTileEntity() {
         super(RegistryHandler.CINDERWORM_HEAD_TILE_ENTITY.get());
     }
 
-
     @Override
     public void tick() {
-//        if(!tankConfigured) {
-//            CompoundNBT teNBT = this.getTileData().getCompound("tankAmount");
-//            this.read(this.getBlockState(), teNBT);
-//            int tankAmount = teNBT.getInt("tankAmount");
-//            //        this.read(this.getTileData());
-//            //        ItemStack tesseractItem =
-//            this.tank.fill(new FluidStack(Fluids.WATER.getFluid(), tankAmount), IFluidHandler.FluidAction.EXECUTE);
-//            tankConfigured = true;
-//        }
 
         ticks++;
-        if (ticks == 20) {
-            ticks = 0;
-            Cinderbane.LOGGER.info("Cinderworm Head is Active");
+        if (!world.isRemote) {
+            if (ticks == 4) {
+                Cinderbane.LOGGER.info("Worm is Active");
+            }
+            if (ticks == 5) {
+
+
+                isHungry = true;
+                Cinderbane.LOGGER.info("Will eat");
+                ticks = 0;
+            }
+            if (isHungry) {
+
+                BlockPos blockPosDirections[] = {
+                        down = this.pos.down(),
+                        up = this.pos.up(),
+                        north = this.pos.north(),
+                        south = this.pos.south(),
+                        west = this.pos.west(),
+                        east = this.pos.east(),
+                };
+                Random rand = new Random();
+                int randomDirectionInt = rand.nextInt(4);
+
+                currentFood = world.getBlockState(blockPosDirections[randomDirectionInt]);
+                if (currentFood != deniedFood()) {
+                    world.setBlockState(blockPosDirections[randomDirectionInt], RegistryHandler.CINDERWORM_HEAD.get().getDefaultState());
+                    world.setBlockState(this.pos, RegistryHandler.CINDERWORM_BASE.get().getDefaultState());
+                };
+
+            }
+
+
         }
+
+
     }
+
+    private BlockState deniedFood() {
+        if (currentFood == RegistryHandler.CINDERWORM_HEAD.get().getDefaultState()) {
+            return RegistryHandler.CINDERWORM_HEAD.get().getDefaultState();
+        }
+        if (currentFood == RegistryHandler.CINDERWORM_BASE.get().getDefaultState()) {
+            return RegistryHandler.CINDERWORM_BASE.get().getDefaultState();
+        }
+        if (currentFood == Blocks.BEDROCK.getDefaultState()) {
+            return Blocks.BEDROCK.getDefaultState();
+        }
+        if (currentFood == Blocks.AIR.getDefaultState()) {
+            return Blocks.AIR.getDefaultState();
+        }
+        if (currentFood == Blocks.VOID_AIR.getDefaultState()) {
+            return Blocks.VOID_AIR.getDefaultState();
+        }
+        if (currentFood == Blocks.CAVE_AIR.getDefaultState()) {
+            return Blocks.CAVE_AIR.getDefaultState();
+        }
+        if (currentFood == Blocks.WATER.getDefaultState()) {
+            return Blocks.WATER.getDefaultState();
+        }
+        if (currentFood == Blocks.LAVA.getDefaultState()) {
+            return Blocks.LAVA.getDefaultState();
+        }
+        return Blocks.BEDROCK.getDefaultState();
+    }
+
+
+//    private BlockState availableFood() {
+//        return RegistryHandler.
+//    }
 
 }

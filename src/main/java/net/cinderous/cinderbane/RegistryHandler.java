@@ -14,6 +14,7 @@ import net.cinderous.cinderbane.material.CinderbaneArmorMaterial;
 
 import net.cinderous.cinderbane.tileentity.CinderousTesseractTileEntity;
 import net.cinderous.cinderbane.tileentity.CinderwoodTreeBuilderTileEntity;
+import net.cinderous.cinderbane.tileentity.CinderwormBaseTileEntity;
 import net.cinderous.cinderbane.tileentity.CinderwormHeadTileEntity;
 import net.cinderous.cinderbane.util.CinderbaneItemTier;
 import net.cinderous.cinderbane.world.feature.CinderkelpFeature;
@@ -103,6 +104,7 @@ public class RegistryHandler
     public static final RegistryObject<Block> CINDERKELP_TOP = BLOCKS.register("cinderkelp_top", () -> new CinderkelpTop(Block.Properties.create(Material.OCEAN_PLANT).doesNotBlockMovement().notSolid()));
     public static final RegistryObject<Block> CINDEROUS_TESSERACT = BLOCKS.register("cinderous_tesseract", () -> new CinderousTesseract());
     public static final RegistryObject<Block> CINDERWORM_HEAD = BLOCKS.register("cinderworm_head", () -> new CinderwormHead());
+    public static final RegistryObject<Block> CINDERWORM_BASE = BLOCKS.register("cinderworm_base", () -> new CinderwormBase(Block.Properties.create(Material.EARTH)));
     //public static final RegistryObject<Block> CINDEROUS_CRYSTAL_MATRIX = BLOCKS.register("cinderous_crystal_matrix", () -> new CinderousCrystalMatrix());
     //Blocks Item
     public static final RegistryObject<Item> CINDIRT_ITEM = ITEMS.register("cindirt", () -> new BlockItem(CINDIRT.get(), new Item.Properties().group(Cinderbane.CINDERBANE_TAB)));
@@ -188,6 +190,8 @@ public class RegistryHandler
     public static final RegistryObject<TileEntityType<CinderwormHeadTileEntity>> CINDERWORM_HEAD_TILE_ENTITY = TILE_ENTITIES.register("cinderworm_head_tile_entity", () -> TileEntityType.Builder
             .create(CinderwormHeadTileEntity::new, RegistryHandler.CINDERWORM_HEAD.get()).build(null));
 
+    public static final RegistryObject<TileEntityType<CinderwormBaseTileEntity>> CINDERWORM_BASE_TILE_ENTITY = TILE_ENTITIES.register("cinderworm_base_tile_entity", () -> TileEntityType.Builder
+            .create(CinderwormBaseTileEntity::new, RegistryHandler.CINDERWORM_BASE.get()).build(null));
 //    public static final RegistryObject<TileEntityType<CinderousCrystalMatrixTileEntity>> CINDEROUS_CRYSTAL_MATRIX_TILE_ENTITY = TILE_ENTITIES.register("cinderous_crystal_matrix_tile_enity", () -> TileEntityType.Builder
 //            .create(CinderousCrystalMatrixTileEntity::new, RegistryHandler.CINDEROUS_CRYSTAL_MATRIX.get()).build(null));
 
