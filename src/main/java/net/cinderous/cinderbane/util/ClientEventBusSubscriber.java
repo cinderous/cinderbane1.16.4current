@@ -5,6 +5,8 @@ import net.cinderous.cinderbane.RegistryHandler;
 import net.cinderous.cinderbane.client.entity.model.render.CinderousZealotRender;
 import net.cinderous.cinderbane.client.entity.model.render.HyphinityWispRender;
 import net.cinderous.cinderbane.client.entity.model.render.LavaSquidRender;
+
+import net.cinderous.cinderbane.render.TesseractRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.RenderType;
@@ -18,6 +20,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -40,7 +43,12 @@ public class ClientEventBusSubscriber {
         RenderTypeLookup.setRenderLayer(RegistryHandler.CINDERBANE_LEAVES.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RegistryHandler.CINDERKELP.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(RegistryHandler.CINDERKELP_TOP.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(RegistryHandler.CINDEROUS_TESSERACT.get(), RenderType.getCutout());
+
+        ClientRegistry.bindTileEntityRenderer(RegistryHandler.CINDEROUS_TESSERACT_TILE_ENTITY.get(), TesseractRender::new);
     }
+
+
 
 
 

@@ -8,6 +8,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -29,7 +31,16 @@ public class CinderousTesseractTileEntity extends TileEntity implements ITickabl
         public boolean isFluidValid(FluidStack stack) {
             return stack.getFluid() == Fluids.WATER;
         }
+
+        @Override
+        protected void onContentsChanged() {
+            BlockState blockstate = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,blockstate,blockstate,3);
+            markDirty();
+        }
     };
+
+
 
     public boolean tankConfigured = false;
 
@@ -92,6 +103,22 @@ public class CinderousTesseractTileEntity extends TileEntity implements ITickabl
         getTank().writeToNBT(tag);
         Cinderbane.LOGGER.info(tag + "tag");
         return tag;
+    }
+
+    @Nonnull
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return write(new CompoundNBT());
+    }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(getPos(), 1, getUpdateTag());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        this.read(null,packet.getNbtCompound());
     }
 
 

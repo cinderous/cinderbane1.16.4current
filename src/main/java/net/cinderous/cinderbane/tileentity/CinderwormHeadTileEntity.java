@@ -66,7 +66,7 @@ public class CinderwormHeadTileEntity extends TileEntity implements ITickableTil
                         east = this.pos.east(),
                 };
                 Random rand = new Random();
-                int randomDirectionInt = rand.nextInt(4);
+                int randomDirectionInt = rand.nextInt(6);
 
                 currentFood = world.getBlockState(blockPosDirections[randomDirectionInt]);
                 if (currentFood != deniedFood()) {
